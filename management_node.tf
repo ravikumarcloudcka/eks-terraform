@@ -1,6 +1,6 @@
 resource "aws_instance" "eks-management-node" {
     ami = "ami-010f8b02680f80998"
-    instance_type = "t2.micro"
+    instance_type = "t3.medium"
     availability_zone = "us-west-1a"
     associate_public_ip_address = true
     key_name = "management_node"
@@ -34,6 +34,15 @@ resource "aws_security_group" "management-node-sg" {
         from_port = 22
         protocol = "tcp"
         to_port = 22
+    }
+    ingress {
+        cidr_blocks = [
+            "0.0.0.0/0"
+        ]
+        description = "Jenkins"
+        from_port = 8080
+        protocol = "tcp"
+        to_port = 8080
     }
     egress {
         cidr_blocks = [
